@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  planka:
+    image: ghcr.io/evan043/planka:latest
+    container_name: planka
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3600:1337"
+    volumes:
+      - planka-avatars:/app/public/user-avatars
+      - planka-backgrounds:/app/public/background-images
+      - planka-attachments:/app/private/attachments
+    environment:
+      - BASE_URL=https://planka.eroland.me
+      - DATABASE_URL=postgresql://planka:${PLANKA_DB_PASSWORD}@planka-db:5432/planka
+      - SECRET_KEY=${PLANKA_SECRET_KEY}
+      - DEFAULT_ADMIN_EMAIL=${PLANKA_ADMIN_EMAIL}
+      - TRUST_PROXY=1
+      - COOKIE_SAME_SITE=none
+      - LOG_LEVEL=warn
+
+      # OIDC Configuration (for BO360 integration)
+      # Uncomment and configure when ready:
+      # - OIDC_ISSUER=${OIDC_ISSUER}
+      # - OIDC_CLIENT_ID=${OIDC_CLIENT_ID}
+      # - OIDC_CLIENT_SECRET=${OIDC_CLIENT_SECRET}
+      # - OIDC_SCOPES=openid email profile
+      # - OIDC_EMAIL_ATTRIBUTE=email
+      # - OIDC_NAME_ATTRIBUTE=name
+      # - OIDC_ENFORCED=true
+    depends_on:
+      planka-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "./healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  planka-db:
+    image: postgres:16-alpine
+    container_name: planka-db
+    restart: unless-stopped
+    volumes:
+      - planka-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=planka
+      - POSTGRES_PASSWORD=${PLANKA_DB_PASSWORD}
+      - POSTGRES_DB=planka
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U planka -d planka"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  planka-avatars:
+  planka-backgrounds:
+  planka-attachments:
+  planka-db-data:
