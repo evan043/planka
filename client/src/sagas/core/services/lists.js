@@ -134,12 +134,26 @@ export function* handleListUpdate(list) {
 }
 
 export function* moveList(id, index) {
-  const { boardId } = yield select(selectors.selectListById, id);
+  const list = yield select(selectors.selectListById, id);
+  const { boardId } = list;
+
+  // Get current index of the list for potential rollback
+  const currentListIds = yield select(selectors.selectKanbanListIdsForCurrentBoard);
+  const previousIndex = currentListIds.indexOf(id);
+
+  // Dispatch optimistic update FIRST - this updates state immediately
+  yield put(actions.moveListOptimistic(id, boardId, index, previousIndex));
+
+  // Calculate server position
   const position = yield select(selectors.selectNextListPosition, boardId, index, id);
 
-  yield call(updateList, id, {
-    position,
-  });
+  // Make API call (don't dispatch LIST_UPDATE since we already moved optimistically)
+  try {
+    yield call(request, api.updateList, id, { position });
+  } catch (error) {
+    // On failure, rollback to previous position
+    yield put(actions.moveListOptimistic.rollback(id, boardId, previousIndex));
+  }
 }
 
 export function* transferList(id, boardId) {

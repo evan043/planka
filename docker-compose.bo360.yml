@@ -1,0 +1,97 @@
+# BO360 Operations Command Console - Planka Docker Compose
+#
+# Usage:
+#   Local development: docker-compose -f docker-compose.bo360.yml up -d
+#   Build image:       docker-compose -f docker-compose.bo360.yml build
+#   View logs:         docker-compose -f docker-compose.bo360.yml logs -f planka
+#   Stop:              docker-compose -f docker-compose.bo360.yml down
+#
+# Environment Variables (create .env file or set directly):
+#   - BASE_URL: The URL where Planka will be accessible (default: http://localhost:3000)
+#   - SECRET_KEY: A secure random key for session encryption (required in production)
+#   - DEFAULT_ADMIN_EMAIL: Initial admin email
+#   - DEFAULT_ADMIN_PASSWORD: Initial admin password (change after first login!)
+
+services:
+  planka:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: planka-bo360:latest
+    container_name: planka-bo360
+    restart: unless-stopped
+    volumes:
+      - favicons:/app/public/favicons
+      - user-avatars:/app/public/user-avatars
+      - background-images:/app/public/background-images
+      - attachments:/app/private/attachments
+    ports:
+      - "3000:1337"
+    environment:
+      # Base Configuration
+      - BASE_URL=${BASE_URL:-http://localhost:3000}
+      - DATABASE_URL=postgresql://postgres@postgres/planka
+      - SECRET_KEY=${SECRET_KEY:-change-this-in-production-bo360-secret}
+
+      # Default Admin (optional - comment out to set manually)
+      - DEFAULT_ADMIN_EMAIL=${DEFAULT_ADMIN_EMAIL:-admin@bo360.local}
+      - DEFAULT_ADMIN_PASSWORD=${DEFAULT_ADMIN_PASSWORD:-changeme123}
+      - DEFAULT_ADMIN_NAME=BO360 Admin
+      - DEFAULT_ADMIN_USERNAME=admin
+
+      # Application Settings
+      - DEFAULT_LANGUAGE=en-US
+      - LOG_LEVEL=info
+      # - TRUST_PROXY=true  # Uncomment if behind reverse proxy
+      # - MAX_UPLOAD_FILE_SIZE=  # Max upload size in bytes
+
+      # Token Settings
+      # - TOKEN_EXPIRES_IN=365  # In days
+
+      # Email Notifications (configure for production)
+      # - SMTP_HOST=smtp.example.com
+      # - SMTP_PORT=587
+      # - SMTP_SECURE=true
+      # - SMTP_USER=
+      # - SMTP_PASSWORD=
+      # - SMTP_FROM="BO360 Planka" <noreply@example.com>
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - planka-network
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: planka-bo360-db
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=planka
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d planka"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - planka-network
+
+volumes:
+  favicons:
+    name: planka-bo360-favicons
+  user-avatars:
+    name: planka-bo360-avatars
+  background-images:
+    name: planka-bo360-backgrounds
+  attachments:
+    name: planka-bo360-attachments
+  db-data:
+    name: planka-bo360-db
+
+networks:
+  planka-network:
+    name: planka-bo360-network
+    driver: bridge

@@ -1,7 +1,11 @@
 /*!
  * Copyright (c) 2024 PLANKA Software GmbH
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ *
+ * BO360 Operations Command Console Theme - Login Styles
  */
+
+@import '../../../styles/bo360-variables';
 
 :global(#app) {
   .cover {
@@ -9,7 +13,7 @@
   }
 
   .coverOverlay {
-    background: rgba(33, 33, 33, 0.5);
+    background: rgba(10, 14, 20, 0.85);
     bottom: 0;
     height: 100%;
     left: 0;
@@ -17,10 +21,13 @@
     right: 0;
     top: 0;
     width: 100%;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   .divider {
     font-weight: normal;
+    color: $bo360-text-muted;
   }
 
   .form {
@@ -33,12 +40,14 @@
   .formTitle {
     font-size: 36px;
     font-weight: bold;
+    color: $bo360-text-primary;
   }
 
   .formSubtitle {
     font-size: 28px;
     font-weight: normal;
     margin-bottom: 32px;
+    color: $bo360-text-secondary;
   }
 
   .grid {
@@ -55,10 +64,34 @@
     font-size: 16px;
     line-height: 20px;
     margin-bottom: 4px;
+    color: $bo360-text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 11px;
   }
 
   .inputWrapper {
     margin-bottom: 16px;
+
+    input {
+      background: $bo360-bg-tertiary;
+      border: 1px solid $bo360-glass-border;
+      border-radius: $bo360-radius-md;
+      color: $bo360-text-primary;
+      padding: $bo360-space-sm $bo360-space-md;
+      transition: $bo360-transition-fast;
+
+      &:focus {
+        border-color: $bo360-accent-primary;
+        box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        outline: none;
+      }
+
+      &::placeholder {
+        color: $bo360-text-muted;
+        opacity: 0.7;
+      }
+    }
   }
 
   .login {
@@ -74,6 +107,7 @@
   .logo {
     max-height: 144px;
     max-width: 80%;
+    filter: brightness(1.1);
   }
 
   .logoWrapper {
@@ -92,12 +126,12 @@
   }
 
   .poweredByText {
-    color: #6b808c;
+    color: $bo360-text-muted;
     font-weight: lighter;
     text-align: center;
   }
 
   .wrapper {
-    background: #fff;
+    background: $bo360-bg-secondary;
   }
 }

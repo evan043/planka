@@ -35,6 +35,25 @@ const handleListCreate = (list) => ({
   },
 });
 
+const moveListOptimistic = (id, boardId, index, previousIndex) => ({
+  type: ActionTypes.LIST_MOVE_OPTIMISTIC,
+  payload: {
+    id,
+    boardId,
+    index,
+    previousIndex,
+  },
+});
+
+moveListOptimistic.rollback = (id, boardId, previousIndex) => ({
+  type: ActionTypes.LIST_MOVE_OPTIMISTIC__ROLLBACK,
+  payload: {
+    id,
+    boardId,
+    previousIndex,
+  },
+});
+
 const updateList = (id, data) => ({
   type: ActionTypes.LIST_UPDATE,
   payload: {
@@ -204,6 +223,7 @@ const handleListDelete = (list, cards) => ({
 export default {
   createList,
   handleListCreate,
+  moveListOptimistic,
   updateList,
   handleListUpdate,
   sortList,

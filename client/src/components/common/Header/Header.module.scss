@@ -1,28 +1,38 @@
 /*!
  * Copyright (c) 2024 PLANKA Software GmbH
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ *
+ * BO360 Operations Command Console Theme - Header Styles
  */
+
+@import '../../../styles/bo360-variables';
 
 :global(#app) {
   .editButton {
     background: transparent;
     box-shadow: none;
-    color: #fff;
+    color: $bo360-text-secondary;
     font-size: 15px;
     line-height: 34px;
     margin-left: 8px;
     opacity: 0;
     padding: 0;
     width: 34px;
+    border-radius: $bo360-radius-sm;
+    transition: $bo360-transition-fast;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 212, 255, 0.1);
+      color: $bo360-text-accent;
     }
   }
 
   .item {
     cursor: auto;
     user-select: auto;
+    color: $bo360-text-secondary;
+    transition: $bo360-transition-fast;
+    border-radius: $bo360-radius-sm;
 
     &:before {
       background: none;
@@ -30,8 +40,8 @@
 
     &:active,
     &:hover {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.9);
+      background: rgba(0, 212, 255, 0.1);
+      color: $bo360-text-accent;
 
       .editButton {
         opacity: 1;
@@ -41,20 +51,23 @@
 
   .itemHoverable:hover {
     cursor: pointer;
-    background: rgba(0, 0, 0, 0.32);
+    background: rgba(0, 212, 255, 0.1);
+    color: $bo360-text-accent;
   }
 
   .itemIconEnabled {
-    color: #bdff22;
+    color: $bo360-accent-secondary;
   }
 
   .logo {
-    color: #fff;
+    color: $bo360-text-primary;
     flex: 0 0 auto;
     letter-spacing: 3.5px;
     line-height: 50px;
     padding: 0 16px;
     text-transform: uppercase;
+    filter: brightness(1.2);
+    opacity: 0.9;
 
     &:before {
       background: none;
@@ -66,7 +79,7 @@
     border: none;
     border-radius: 0;
     box-shadow: none;
-    color: #fff;
+    color: $bo360-text-primary;
     flex: 1 1 auto;
     height: 50px;
     margin: 0;
@@ -74,7 +87,7 @@
   }
 
   .notification {
-    background: #eb5a46;
+    background: $bo360-accent-danger;
     border-radius: 8px;
     color: #fff;
     display: inline-block;
@@ -87,15 +100,18 @@
     position: absolute;
     text-align: center;
     top: 8px;
+    box-shadow: 0 0 10px $bo360-accent-danger;
   }
 
   .title {
     font-size: 20px;
     font-weight: bold;
+    color: $bo360-text-primary;
   }
 
   .userName {
     margin-right: 10px;
+    color: $bo360-text-secondary;
 
     @media only screen and (width < 768px) {
       display: none;
@@ -103,7 +119,11 @@
   }
 
   .wrapper {
-    background: rgba(0, 0, 0, 0.24);
+    background: linear-gradient(180deg, $bo360-bg-secondary 0%, $bo360-bg-primary 100%);
+    border-bottom: 1px solid $bo360-glass-border;
+    box-shadow: $bo360-shadow-md;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     display: flex;
     flex: 0 0 auto;
   }

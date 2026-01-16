@@ -1,12 +1,18 @@
 /*!
  * Copyright (c) 2024 PLANKA Software GmbH
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ *
+ * BO360 Operations Command Console Theme
+ * Customized by BO360 Engineering
  */
+
+@import './styles/bo360-variables';
 
 :global {
   #app {
-    background: #22252a;
+    background: $bo360-bg-primary;
     overflow-x: auto;
+    color: $bo360-text-primary;
 
     &::-webkit-scrollbar {
       height: auto;
@@ -334,36 +340,61 @@
   }
 
   ::-webkit-scrollbar {
-    height: 10px;
-    width: 10px;
+    height: 8px;
+    width: 8px;
     -webkit-appearance: none;
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+    background: $bo360-bg-secondary;
     border-radius: 0px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
+    background: $bo360-bg-tertiary;
+    border-radius: 4px;
     cursor: pointer;
-    transition: color 0.2s ease;
-    -webkit-transition: color 0.2s ease;
+    transition: background 0.2s ease;
+    -webkit-transition: background 0.2s ease;
   }
 
   ::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(0, 0, 0, 0.15);
+    background: $bo360-bg-tertiary;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(128, 135, 139, 0.8);
+    background: $bo360-accent-primary;
+  }
+
+  ::selection {
+    background: rgba(0, 212, 255, 0.3);
+    color: $bo360-text-primary;
   }
 }
 
 :global(#app) {
   &.dragging > * {
     pointer-events: none;
+  }
+
+  &.dragging {
+    // Prevent layout shifts during drag
+    overflow-x: auto;
+
+    // Hide all react-beautiful-dnd placeholders during list drag
+    [data-rbd-placeholder-context-id] {
+      background: transparent !important;
+      border: none !important;
+      opacity: 0 !important;
+      box-shadow: none !important;
+    }
+
+    // Style the dragged element
+    [data-rbd-draggable-context-id][data-rbd-draggable-id^="list:"] {
+      // Add subtle glow effect while dragging
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 212, 255, 0.3) !important;
+      z-index: 9999;
+    }
   }
 
   &.dragScrolling > * {
@@ -713,5 +744,35 @@
 
   .colorTurquoiseSea {
     color: #00858a !important;
+  }
+
+  /* react-beautiful-dnd placeholder styling */
+  [data-rbd-placeholder-context-id] {
+    // Global placeholder styling - make invisible/minimal
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    // Use low opacity instead of display:none to preserve space
+    opacity: 0 !important;
+    transition: none !important;
+  }
+
+  /* Active drag styles for lists */
+  [data-rbd-drag-handle-draggable-id^="list:"][data-rbd-drag-handle-context-id] {
+    cursor: grabbing !important;
+  }
+
+  /* Dragging list element styles */
+  [data-rbd-draggable-id^="list:"][data-is-dragging="true"] {
+    // Subtle shadow while being dragged
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 212, 255, 0.2) !important;
+    transform: rotate(2deg);
+    z-index: 9999 !important;
+  }
+
+  /* Card dragging styles */
+  [data-rbd-draggable-id^="card:"][data-is-dragging="true"] {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 12px rgba(0, 212, 255, 0.15) !important;
+    z-index: 9998 !important;
   }
 }

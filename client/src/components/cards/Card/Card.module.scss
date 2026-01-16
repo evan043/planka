@@ -1,15 +1,19 @@
 /*!
  * Copyright (c) 2024 PLANKA Software GmbH
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ *
+ * BO360 Operations Command Console Theme - Card Styles
  */
+
+@import '../../../styles/bo360-variables';
 
 :global(#app) {
   .actionsButton {
-    background: none;
+    background: $bo360-bg-tertiary;
     box-shadow: none;
-    border-radius: 3px;
+    border-radius: $bo360-radius-sm;
     box-sizing: content-box;
-    color: #798d99;
+    color: $bo360-text-muted;
     display: inline-block;
     margin: 0;
     min-height: auto;
@@ -19,18 +23,18 @@
     position: absolute;
     right: 2px;
     top: 2px;
-    transition: background 85ms ease;
+    transition: $bo360-transition-fast;
     width: 20px;
     z-index: 1000;
 
     &:hover {
-      background: #ebeef0;
-      color: #516b7a;
+      background: rgba(0, 212, 255, 0.2);
+      color: $bo360-text-accent;
     }
   }
 
   .colorLine {
-    border-radius: 0 0 3px 3px;
+    border-radius: 0 0 $bo360-radius-md $bo360-radius-md;
     height: 4px;
   }
 
@@ -54,16 +58,13 @@
   }
 
   .wrapper {
-    background: #fff;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 #ccc;
+    @include bo360-card-style;
     overflow: hidden;
     position: relative;
+    margin-bottom: $bo360-space-sm;
+    cursor: pointer;
 
     &:hover {
-      background: #f5f6f7;
-      border-bottom-color: rgba(9, 30, 66, 0.25);
-
       .actionsButton {
         opacity: 1;
       }
@@ -75,7 +76,7 @@
 
     &:after {
       animation: slide 4s infinite 2s;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.64) 50%, rgba(128, 186, 232, 0) 99%, rgba(125, 185, 232, 0) 100%);
+      background: linear-gradient(to right, rgba(0, 212, 255, 0) 0%, rgba(0, 212, 255, 0.2) 50%, rgba(0, 212, 255, 0) 99%, rgba(0, 212, 255, 0) 100%);
       content: '';
       height: 100%;
       position: absolute;

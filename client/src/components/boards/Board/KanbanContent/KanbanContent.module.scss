@@ -1,31 +1,39 @@
 /*!
  * Copyright (c) 2024 PLANKA Software GmbH
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ *
+ * BO360 Operations Command Console Theme - Board Kanban Content Styles
  */
+
+@import '../../../../styles/bo360-variables';
 
 :global(#app) {
   .addListButton {
-    background: rgba(0, 0, 0, 0.24);
-    border: none;
-    border-radius: 3px;
-    color: rgba(255, 255, 255, 0.72);
+    @include bo360-glass-surface;
+    border: 2px dashed $bo360-glass-border;
+    border-radius: $bo360-radius-lg;
+    color: $bo360-text-muted;
     cursor: pointer;
     display: block;
-    fill: rgba(255, 255, 255, 0.72);
+    fill: $bo360-text-muted;
     font-weight: normal;
     height: 42px;
     padding: 11px;
     text-align: left;
-    transition: background 85ms ease-in, opacity 40ms ease-in,
-      border-color 85ms ease-in;
+    transition: $bo360-transition-normal;
     width: 100%;
+    min-width: 280px;
 
     &:active {
       outline: none;
     }
 
     &:hover {
-      background: rgba(0, 0, 0, 0.32);
+      background: rgba(0, 212, 255, 0.1);
+      border-color: $bo360-accent-primary;
+      color: $bo360-text-accent;
+      fill: $bo360-text-accent;
+      box-shadow: $bo360-glow-accent;
     }
   }
 
@@ -43,17 +51,39 @@
   }
 
   .list {
-    margin-right: 8px;
+    // Use fixed width instead of margin-right to prevent drift
+    flex: 0 0 272px;
     width: 272px;
+    // Margin instead of gap for more predictable spacing during drag
+    margin-right: $bo360-space-md;
   }
 
   .lists {
     display: inline-flex;
     height: 100%;
     min-width: 100%;
+    // Remove gap - use margin on .list instead for stable drag behavior
+    // gap: $bo360-space-md;
+    padding: $bo360-space-sm;
+    // Force GPU layer to prevent reflow during drag
+    transform: translateZ(0);
+    will-change: contents;
+
+    // Style the react-beautiful-dnd placeholder to prevent green ghosting
+    > [data-rbd-placeholder-context-id] {
+      // Make placeholder invisible but preserve space
+      background: transparent !important;
+      border: none !important;
+      opacity: 0 !important;
+      // Maintain dimensions for proper spacing
+      flex: 0 0 272px;
+      width: 272px;
+      margin-right: $bo360-space-md;
+    }
   }
 
   .wrapper {
-    padding: 0 12px 0 20px;
+    background: $bo360-bg-primary;
+    padding: 0 $bo360-space-md 0 $bo360-space-lg;
   }
 }

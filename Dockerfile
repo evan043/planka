@@ -1,3 +1,9 @@
+# BO360 Operations Command Console - Planka Fork
+# Custom themed version of Planka for Benefits Outreach 360
+#
+# Build: docker build -t planka-bo360:latest .
+# Run: docker-compose up -d
+
 # Stage 1: Server build
 FROM node:22-alpine AS server
 
@@ -13,19 +19,27 @@ RUN npm install npm --global \
   && npm run build \
   && npm prune --production
 
-# Stage 2: Client build
+# Stage 2: Client build (with BO360 theme)
 FROM node:22 AS client
 
 WORKDIR /app
 
 COPY client .
 
+# Install all dependencies including dev deps for build
 RUN npm install npm --global \
-  && npm install --omit=dev \
+  && npm install \
   && DISABLE_ESLINT_PLUGIN=true npm run build
 
 # Stage 3: Final image
 FROM node:22-alpine
+
+# Add BO360 labels
+LABEL org.opencontainers.image.title="Planka BO360"
+LABEL org.opencontainers.image.description="BO360 Operations Command Console - Custom themed Planka"
+LABEL org.opencontainers.image.source="https://github.com/evan043/Benefits-Outreach-360"
+LABEL org.opencontainers.image.vendor="BO360 Engineering"
+LABEL maintainer="BO360 Engineering"
 
 RUN apk -U upgrade \
   && apk add bash python3 --no-cache \

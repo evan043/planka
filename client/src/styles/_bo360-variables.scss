@@ -1,0 +1,174 @@
+/*!
+ * BO360 Operations Command Console Theme Variables
+ *
+ * This file contains all BO360 theme design tokens for Planka customization.
+ * Import this file into any SCSS module that needs BO360 theming.
+ *
+ * @version 1.0.0
+ * @author BO360 Engineering
+ */
+
+// =============================================================================
+// PRIMARY COLORS - Command Console Design Tokens
+// =============================================================================
+
+// Background Colors
+$bo360-bg-primary: #0a0e14;
+$bo360-bg-secondary: #111821;
+$bo360-bg-tertiary: #1a2332;
+$bo360-bg-elevated: #1e2738;
+
+// Glassmorphic Surfaces
+$bo360-glass-bg: rgba(17, 24, 33, 0.85);
+$bo360-glass-border: rgba(255, 255, 255, 0.08);
+$bo360-glass-glow: rgba(0, 212, 255, 0.1);
+
+// Accent Colors - Cyber Ops Palette
+$bo360-accent-primary: #00d4ff;
+$bo360-accent-secondary: #00ff88;
+$bo360-accent-warning: #ffaa00;
+$bo360-accent-danger: #ff3366;
+$bo360-accent-purple: #aa66ff;
+
+// Text Colors
+$bo360-text-primary: #e8eef5;
+$bo360-text-secondary: #8899aa;
+$bo360-text-muted: #556677;
+$bo360-text-accent: #00d4ff;
+
+// Original theme colors (for reference/fallback)
+$bo360-primary-navy: #1e3a5f;
+$bo360-accent-blue: #3b82f6;
+$bo360-background-dark: #0f172a;
+$bo360-background-light: #f8fafc;
+$bo360-text-dark: #f1f5f9;
+$bo360-text-light: #1e293b;
+
+// =============================================================================
+// SHADOWS & GLOWS
+// =============================================================================
+
+$bo360-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+$bo360-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+$bo360-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+$bo360-glow-accent: 0 0 20px rgba(0, 212, 255, 0.3);
+$bo360-glow-success: 0 0 20px rgba(0, 255, 136, 0.3);
+
+// =============================================================================
+// SPACING - Condensed Density
+// =============================================================================
+
+$bo360-space-xs: 4px;
+$bo360-space-sm: 8px;
+$bo360-space-md: 12px;
+$bo360-space-lg: 16px;
+$bo360-space-xl: 24px;
+
+// =============================================================================
+// BORDER RADIUS
+// =============================================================================
+
+$bo360-radius-sm: 4px;
+$bo360-radius-md: 8px;
+$bo360-radius-lg: 12px;
+
+// =============================================================================
+// TYPOGRAPHY
+// =============================================================================
+
+$bo360-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+$bo360-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+// =============================================================================
+// TRANSITIONS
+// =============================================================================
+
+$bo360-transition-fast: 150ms ease;
+$bo360-transition-normal: 250ms ease;
+$bo360-transition-slow: 400ms ease;
+
+// =============================================================================
+// COMPONENT-SPECIFIC COLORS
+// =============================================================================
+
+// Header
+$bo360-header-bg: linear-gradient(180deg, $bo360-bg-secondary 0%, $bo360-bg-primary 100%);
+$bo360-header-border: $bo360-glass-border;
+
+// Lists
+$bo360-list-bg: $bo360-glass-bg;
+$bo360-list-header-bg: linear-gradient(135deg, $bo360-bg-tertiary 0%, $bo360-bg-secondary 100%);
+
+// Cards
+$bo360-card-bg: $bo360-bg-elevated;
+$bo360-card-hover-bg: $bo360-bg-tertiary;
+$bo360-card-border: $bo360-glass-border;
+$bo360-card-hover-border: rgba(0, 212, 255, 0.3);
+
+// Buttons
+$bo360-button-primary-bg: linear-gradient(135deg, $bo360-accent-primary 0%, #00aadd 100%);
+$bo360-button-primary-text: #0a1a2a;
+$bo360-button-secondary-bg: $bo360-bg-elevated;
+$bo360-button-secondary-text: $bo360-text-secondary;
+
+// Inputs
+$bo360-input-bg: $bo360-bg-tertiary;
+$bo360-input-border: $bo360-glass-border;
+$bo360-input-focus-border: $bo360-accent-primary;
+$bo360-input-text: $bo360-text-primary;
+
+// Modals
+$bo360-modal-bg: $bo360-bg-secondary;
+$bo360-modal-overlay: rgba(0, 0, 0, 0.8);
+
+// Notifications
+$bo360-notification-badge: $bo360-accent-danger;
+
+// =============================================================================
+// MIXINS
+// =============================================================================
+
+@mixin bo360-glass-surface {
+  background: $bo360-glass-bg;
+  border: 1px solid $bo360-glass-border;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@mixin bo360-glow-hover {
+  border-color: $bo360-accent-primary;
+  box-shadow: $bo360-glow-accent, $bo360-shadow-md;
+}
+
+@mixin bo360-button-primary {
+  background: $bo360-button-primary-bg;
+  color: $bo360-button-primary-text;
+  border: none;
+  border-radius: $bo360-radius-md;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: $bo360-glow-accent;
+  transition: $bo360-transition-fast;
+
+  &:hover {
+    background: linear-gradient(135deg, #00e5ff 0%, #00bbee 100%);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+    transform: translateY(-1px);
+  }
+}
+
+@mixin bo360-card-style {
+  background: $bo360-card-bg;
+  border: 1px solid $bo360-card-border;
+  border-radius: $bo360-radius-md;
+  box-shadow: $bo360-shadow-sm;
+  transition: $bo360-transition-normal;
+
+  &:hover {
+    background: $bo360-card-hover-bg;
+    border-color: $bo360-card-hover-border;
+    box-shadow: $bo360-glow-accent, $bo360-shadow-md;
+    transform: translateY(-1px);
+  }
+}

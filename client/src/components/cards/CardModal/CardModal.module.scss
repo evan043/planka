@@ -1,7 +1,11 @@
 /*!
  * Copyright (c) 2024 PLANKA Software GmbH
  * Licensed under the Fair Use License: https://github.com/plankanban/planka/blob/master/LICENSE.md
+ *
+ * BO360 Operations Command Console Theme - Card Modal Styles
  */
+
+@import '../../../styles/bo360-variables';
 
 :global(#app) {
   @mixin smallScreen {
@@ -10,9 +14,9 @@
   }
 
   .prevButton {
-    background: rgba(255, 255, 255, 0.036);
+    background: rgba(0, 212, 255, 0.05);
     border: none;
-    border-radius: 4px;
+    border-radius: $bo360-radius-md;
     cursor: pointer;
     display: flex;
     height: 100%;
@@ -21,23 +25,28 @@
     padding: 18px 0;
     position: absolute;
     width: 100px;
+    transition: $bo360-transition-fast;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.072);
+      background: rgba(0, 212, 255, 0.1);
 
       .prevkButtonIcon {
-        color: rgba(255, 255, 255, 0.72);
+        color: $bo360-text-accent;
       }
     }
   }
 
   .prevButtonIcon {
-    color: rgba(255, 255, 255, 0.36);
+    color: $bo360-text-muted;
     position: sticky;
     top: 5px;
   }
 
   .wrapper {
+    background: $bo360-bg-secondary;
+    border: 1px solid $bo360-glass-border;
+    border-radius: $bo360-radius-lg;
+    box-shadow: $bo360-shadow-lg, 0 0 60px rgba(0, 212, 255, 0.1);
     margin: 2rem auto;
     width: 880px;
 

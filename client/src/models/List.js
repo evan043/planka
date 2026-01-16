@@ -132,6 +132,73 @@ export default class extends BaseModel {
         List.withId(payload.localId).delete();
 
         break;
+      case ActionTypes.LIST_MOVE_OPTIMISTIC: {
+        // Optimistic reorder: immediately update positions without waiting for API
+        const { id, boardId, index } = payload;
+        const listModel = List.withId(id);
+
+        if (!listModel) {
+          break;
+        }
+
+        // Get all kanban lists for this board, sorted by position
+        const Board = List.session.Board;
+        const boardModel = Board.withId(boardId);
+
+        if (!boardModel) {
+          break;
+        }
+
+        const allLists = boardModel
+          .getKanbanListsQuerySet()
+          .toModelArray()
+          .filter((l) => l.id !== id);
+
+        // Insert the moved list at the new index and recalculate all positions
+        allLists.splice(index, 0, listModel);
+
+        // Update positions for all lists with a gap to prevent conflicts
+        allLists.forEach((l, idx) => {
+          l.update({
+            position: Config.POSITION_GAP * (idx + 1),
+          });
+        });
+
+        break;
+      }
+      case ActionTypes.LIST_MOVE_OPTIMISTIC__ROLLBACK: {
+        // Rollback: restore the list to its previous position
+        const { id, boardId, previousIndex } = payload;
+        const listModel = List.withId(id);
+
+        if (!listModel) {
+          break;
+        }
+
+        const Board = List.session.Board;
+        const boardModel = Board.withId(boardId);
+
+        if (!boardModel) {
+          break;
+        }
+
+        const allLists = boardModel
+          .getKanbanListsQuerySet()
+          .toModelArray()
+          .filter((l) => l.id !== id);
+
+        // Insert back at previous position
+        allLists.splice(previousIndex, 0, listModel);
+
+        // Recalculate all positions
+        allLists.forEach((l, idx) => {
+          l.update({
+            position: Config.POSITION_GAP * (idx + 1),
+          });
+        });
+
+        break;
+      }
       case ActionTypes.LIST_UPDATE: {
         const listModel = List.withId(payload.id);
 
