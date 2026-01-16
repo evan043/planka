@@ -11,9 +11,10 @@ COPY server/package.json server/package-lock.json ./
 RUN npm install npm --global \
   && npm install pnpm --global \
   && pnpm import \
-  && pnpm install --prod
+  && pnpm install --prod \
+  && npm rebuild bcrypt
 
-FROM node:lts AS client
+FROM node:20 AS client
 
 WORKDIR /app
 
@@ -22,7 +23,8 @@ COPY client/package.json client/package-lock.json ./
 RUN npm install npm --global \
   && npm install pnpm --global \
   && pnpm import \
-  && pnpm install --prod
+  && pnpm install --prod \
+  && npm rebuild node-sass
 
 COPY client .
 RUN DISABLE_ESLINT_PLUGIN=true npm run build

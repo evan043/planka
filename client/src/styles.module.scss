@@ -151,6 +151,13 @@
     user-select: none;
   }
 
+  /* Fix: Hide react-beautiful-dnd placeholder ghost artifacts */
+  [data-rbd-placeholder-context-id] {
+    background: transparent !important;
+    border: none !important;
+    opacity: 0 !important;
+  }
+
   /* Backgrounds */
 
   .backgroundBerryRed {

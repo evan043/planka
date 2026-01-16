@@ -95,6 +95,25 @@ export const selectNextCardPosition = createSelector(
   },
 );
 
+export const selectListIndexById = createSelector(
+  orm,
+  (_, id) => id,
+  ({ List }, id) => {
+    const listModel = List.withId(id);
+
+    if (!listModel) {
+      return -1;
+    }
+
+    const { boardId } = listModel;
+    const lists = List.filter({ boardId })
+      .orderBy('position')
+      .toModelArray();
+
+    return lists.findIndex((l) => l.id === id);
+  },
+);
+
 export const selectNextTaskPosition = createSelector(
   orm,
   (_, cardId) => cardId,
@@ -118,5 +137,6 @@ export default {
   selectNextLabelPosition,
   selectNextListPosition,
   selectNextCardPosition,
+  selectListIndexById,
   selectNextTaskPosition,
 };

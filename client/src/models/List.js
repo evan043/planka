@@ -65,6 +65,52 @@ export default class extends BaseModel {
         List.withId(payload.id).update(payload.data);
 
         break;
+      case ActionTypes.LIST_MOVE_OPTIMISTIC: {
+        const { id, boardId, index } = payload;
+        const listModel = List.withId(id);
+
+        if (!listModel) {
+          break;
+        }
+
+        // Get all lists for this board, ordered by position, excluding the moved list
+        const allLists = List.filter({ boardId })
+          .orderBy('position')
+          .toModelArray()
+          .filter((l) => l.id !== id);
+
+        // Insert the moved list at the new index
+        allLists.splice(index, 0, listModel);
+
+        // Update positions for all lists to reflect the new order
+        allLists.forEach((l, idx) => {
+          l.update({ position: 65536 * (idx + 1) });
+        });
+
+        break;
+      }
+      case ActionTypes.LIST_MOVE_OPTIMISTIC__ROLLBACK: {
+        const { id, boardId, previousIndex } = payload;
+        const listModel = List.withId(id);
+
+        if (!listModel) {
+          break;
+        }
+
+        // Rollback: move the list back to its previous position
+        const allLists = List.filter({ boardId })
+          .orderBy('position')
+          .toModelArray()
+          .filter((l) => l.id !== id);
+
+        allLists.splice(previousIndex, 0, listModel);
+
+        allLists.forEach((l, idx) => {
+          l.update({ position: 65536 * (idx + 1) });
+        });
+
+        break;
+      }
       case ActionTypes.LIST_DELETE:
         List.withId(payload.id).deleteWithRelated();
 

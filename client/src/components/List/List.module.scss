@@ -128,8 +128,10 @@
   }
 
   .innerWrapper {
+    flex: 0 0 272px;
     margin-right: 8px;
     width: 272px;
+    transform: translateZ(0); /* GPU acceleration for smooth DnD */
   }
 
   .outerWrapper {

@@ -38,14 +38,17 @@
   }
 
   .list {
+    flex: 0 0 272px;
     margin-right: 20px;
     width: 272px;
+    transform: translateZ(0); /* GPU acceleration for smooth DnD */
   }
 
   .lists {
     display: inline-flex;
     height: 100%;
     min-width: 100%;
+    /* Remove gap in favor of margin-right on items for better DnD behavior */
   }
 
   .wrapper {

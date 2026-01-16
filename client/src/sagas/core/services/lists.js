@@ -63,11 +63,20 @@ export function* handleListUpdate(list) {
 
 export function* moveList(id, index) {
   const { boardId } = yield select(selectors.selectListById, id);
+  const previousIndex = yield select(selectors.selectListIndexById, id);
+
+  // Dispatch optimistic update BEFORE API call for instant visual feedback
+  yield put(actions.moveListOptimistic(id, boardId, index, previousIndex));
+
   const position = yield select(selectors.selectNextListPosition, boardId, index, id);
 
-  yield call(updateList, id, {
-    position,
-  });
+  try {
+    yield call(request, api.updateList, id, { position });
+  } catch (error) {
+    // Rollback on failure
+    yield put(actions.moveListOptimistic.rollback(id, boardId, previousIndex));
+    yield put(actions.updateList.failure(id, error));
+  }
 }
 
 // TODO: sort locally
